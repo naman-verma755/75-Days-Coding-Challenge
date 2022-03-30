@@ -11,8 +11,8 @@ public:
         for(int i = 0; i < size-1; i++) {
             
             if(path[i] > 0 ) {
-                for(int j = i+1; j <= nums[i]+i && j < size; j++) {
-                    if(j == size-1)
+                for(int j = nums[i]+i; j >= i+1 ; j--) {
+                    if(j >= size-1)
                         return true;
                     path[j] += 1;
                 }
