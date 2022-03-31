@@ -4,11 +4,6 @@ public:
         
         int n = s.length();
         int dp[n][n];
-//          for(int i =0; i<n; i++) {
-//             for(int j = 0; j<n;j++)
-//                 dp[i][j] = 0;
-           
-//         }
         for(int i = 0; i < n; i++)
             dp[i][i] = 1;
         for(int l = 1; l < n; l++) {
@@ -25,11 +20,7 @@ public:
                     dp[j][k] = max(dp[j][k-1], dp[j+1][k]);
             }
         }
-        // for(int i =0; i<n; i++) {
-        //     for(int j = 0; j<n;j++)
-        //         cout<<dp[i][j]<<" ";
-        //     cout<<endl;
-        // }
+  
         return dp[0][n-1];
         
     }
