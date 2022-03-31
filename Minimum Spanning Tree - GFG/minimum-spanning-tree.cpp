@@ -50,7 +50,7 @@ class Solution
             parent[i] = i;
             rank[i] = 0;
         }
-        while(!pq.empty()) {
+        for(int i =0 ; i < V-1; ) {
             
             auto it = pq.top();
             pq.pop();
@@ -63,7 +63,7 @@ class Solution
             // cout<<u<<" "<<pt1<<v<<" "<<pt2<<endl;
             if(pt1 == pt2)
             continue;
-            // i++;
+            i++;
             weightOfTree += wt;
             unionOf(pt1, pt2, rank, parent);
         }
