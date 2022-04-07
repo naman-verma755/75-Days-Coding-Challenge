@@ -4,8 +4,9 @@ public:
     int coinChange(vector<int>& coins, int amount) {
         if(amount == 0)
             return 0;
-        vector<vector<int>>dp(coins.size(), vector<int>(amount+1,-1));
         int size = coins.size();
+      int dp[size][amount+1];
+        
         // dp[coins.size()][amount+1];
         for(int i = 0; i < size; i++) {
             for(int j = 1; j <= amount; j++) {
