@@ -16,9 +16,24 @@ public:
         return dp[dice][sum] = ways;
     }
     int numRollsToTarget(int n, int k, int target) {
-        
-        vector<vector<int>>dp(32, vector<int>(1002,-1));
-       return findTotalWays(0, n, k, target, 0, dp);
+        int mod = 1000000007;
+       int dp[n+1][target+1];
+        memset(dp, 0, sizeof(dp));
+        dp[0][0] = 1;
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= target; j++) {
+                
+                for(int e = 1; e <= k; e++) {
+                    if(e <= j)
+                    dp[i][j] = (dp[i][j]%mod+dp[i-1][j-e]%mod)%mod;
+                    else
+                        break;
+                    
+                }
+            }
+        }
+        return dp[n][target];
+       // return findTotalWays(0, n, k, target, 0, dp);
         
     }
 };
