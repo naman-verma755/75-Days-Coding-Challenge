@@ -17,22 +17,39 @@ public:
     }
     int numRollsToTarget(int n, int k, int target) {
         int mod = 1000000007;
-       int dp[n+1][target+1];
-        memset(dp, 0, sizeof(dp));
-        dp[0][0] = 1;
-        for(int i = 1; i <= n; i++) {
-            for(int j = 1; j <= target; j++) {
+       // int dp[n+1][target+1];
+        vector<int>prev(target+1,0);
+        
+        prev[0] = 1;
+        // memset(dp, 0, sizeof(dp));
+        // dp[0][0] = 1;
+//         for(int i = 1; i <= n; i++) {
+//             for(int j = 1; j <= target; j++) {
                 
+//                 for(int e = 1; e <= k; e++) {
+//                     if(e <= j)
+//                     dp[i][j] = (dp[i][j]%mod+dp[i-1][j-e]%mod)%mod;
+//                     else
+//                         break;
+                    
+//                 }
+//             }
+//         }
+        vector<int>curr(target+1, 0);
+        for(int i = 1; i <= n; i++) {
+            
+            for(int j = 1; j <= target; j++) {
+                curr[j] = 0;
                 for(int e = 1; e <= k; e++) {
                     if(e <= j)
-                    dp[i][j] = (dp[i][j]%mod+dp[i-1][j-e]%mod)%mod;
-                    else
-                        break;
+                    curr[j] = (curr[j]%mod+prev[j-e]%mod)%mod;
+                  
                     
                 }
             }
+            prev = curr;
         }
-        return dp[n][target];
+        return prev[target];
        // return findTotalWays(0, n, k, target, 0, dp);
         
     }
