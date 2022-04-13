@@ -2,12 +2,7 @@ class Solution {
 public:
     string multiply(string num, string str) {
         // cout<<num<<endl;
-        int n = 0, j =0;
-        while(j < num.length()) {
-            n = 10*n+(num[j]-'0');
-            j++;
-        }
-        // cout<<n<<" ";
+       int n = stoi(num);
         int i = 0;
         string re = "";
         while(i < n) {
@@ -63,7 +58,7 @@ public:
            
             i++;
         }
-string ans ="";
+        string ans ="";
         while(!st.empty())
         {
             ans = st.top()+ans;
