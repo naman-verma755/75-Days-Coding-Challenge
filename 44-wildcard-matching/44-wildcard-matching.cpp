@@ -40,8 +40,8 @@ public:
             // for(int j = 1; j <= i; j++)
             // {
                 if(p[i-1] != '*') {
-                    fi = false;
-                    // break;
+                    
+                    break;
                 }
           
             dp[i][0] = fi;
