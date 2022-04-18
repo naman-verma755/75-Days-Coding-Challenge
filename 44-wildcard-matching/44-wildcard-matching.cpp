@@ -34,15 +34,16 @@ public:
          vector<vector<bool>>dp(m+1, vector<bool>(n+1, false));
         
         dp[0][0] = true;
+        bool fi = true;
         for(int i = 1; i <= m; i++) {
-            bool fi = true;
-            for(int j = 1; j <= i; j++)
-            {
-                if(p[j-1] != '*') {
+            
+            // for(int j = 1; j <= i; j++)
+            // {
+                if(p[i-1] != '*') {
                     fi = false;
-                    break;
+                    // break;
                 }
-            }
+          
             dp[i][0] = fi;
         }
         
@@ -60,6 +61,12 @@ public:
                 
             }
         }
+        
+        // for(int i = 0; i <= m; i++) {
+        //     for(int j = 0; j <= n; j++) {
+        //         cout<<dp[i][j]<<" ";
+        //     }cout<<endl;
+        // }
         return dp[m][n];
         
     }
