@@ -16,7 +16,7 @@ public:
         if(postStart > postEnd || inStart > inEnd)
             return NULL;
         int val = postorder[postEnd];
-        cout<<val<<" ";
+        // cout<<val<<" ";
         TreeNode* root = new TreeNode(val);
         
         int inRoot = mp[val];
