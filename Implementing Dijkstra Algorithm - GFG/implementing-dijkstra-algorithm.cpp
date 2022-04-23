@@ -33,7 +33,7 @@ class Solution
                 
                 int v = it[0], wt2 = it[1];
                 // cout<<wt1+wt2<<endl;
-                if(!visited[v] && (wt1+wt2) < dist[v]) {
+                if( (wt1+wt2) < dist[v]) {
                     // cout<<it[0]<<" ";
                     
                     if(dist[v] != INT_MAX) {
