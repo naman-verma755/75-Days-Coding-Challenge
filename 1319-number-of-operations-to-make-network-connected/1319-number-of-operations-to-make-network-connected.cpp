@@ -1,61 +1,57 @@
 class Solution {
 public:
-    int find(int node, int parent[]) {
-        if(node == parent[node])
-            return node;
-        return parent[node] = find(parent[node], parent);
+    int find(int u, int parent[]) {
+        if(parent[u] == u)
+            return u;
+        
+        return parent[u] = find(parent[u], parent); // path compression
     }
+    
     void unionOf(int u, int v, int parent[], int rank[]) {
-        if(rank[u] < rank[v]) {
+        
+        if(rank[u] < rank[v]) 
             parent[u] = v;
-        }
-        else if(rank[v] < rank[u]) {
+        else if(rank[u] > rank[v])
+            parent[v] = u;
+        else {
+            rank[u] ++;
             parent[v] = u;
         }
-        else
-        {
-            rank[u]++;
-            parent[v] = u;
-        }
-            
     }
+    
     int makeConnected(int n, vector<vector<int>>& connections) {
         
-        int parent[n];
         int rank[n];
-        for(int i = 0; i < n; i++)
-        {
-            parent[i] = i;
+        int parent[n];
+        for(int i = 0; i < n; i++) {
             rank[i] = 0;
+            parent[i] = i;
         }
         int extraEdges = 0;
-        for(int i = 0; i < connections.size(); i++) {
-              int u = connections[i][0];
-              int v = connections[i][1];
-              int parentOfu = find(u, parent);
-              int parentOfv = find(v, parent);
-              
-              if(parentOfu == parentOfv)
-              {
-                  extraEdges++;
-                  continue;
-              }
-              unionOf(parentOfu, parentOfv, parent, rank);
-              
-        }
-        int countComponents = 0;
-        for(int i = 0; i < n; i++) {
+        for(auto edge : connections) {
             
-            if(parent[i] == i)
-                countComponents++;
-           
+            int vertex1 = edge[0];
+            int vertex2 = edge[1];
+            
+            int parent1 = find(vertex1, parent);
+            int parent2 = find(vertex2, parent);
+            if(parent1 == parent2) {
+                extraEdges++;
+                continue;
+            }
+            
+            unionOf(parent1, parent2, parent, rank);
         }
-        if(extraEdges >= countComponents-1)
-            return countComponents-1;
-        else
-            return -1;
-        return 0;
+        int disconnectedCom = -1;
+        for(int i = 0; i < n; i++) {
+            if(parent[i] == i)
+                disconnectedCom++;
+        }
         
+        if(extraEdges >= disconnectedCom)
+            return disconnectedCom;
+        
+        return -1;
         
     }
 };
