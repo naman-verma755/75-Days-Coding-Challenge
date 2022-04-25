@@ -8,7 +8,7 @@ public:
         int flag = 1;
         int index = 1;
         for(int i = n-1; i >= 0; i--) {
-            // cout<<index<<" ";
+            
             if(flag == 1) {
                 for(int j = 0; j < n; j++) 
                 {
@@ -27,9 +27,7 @@ public:
             }
             
         }
-        // cout<<endl<<endl;
-        // for(int i = 1; i <= n*n; i++)
-        //     cout<<i<<"="<<dp[i]<<"   ";
+       
         
         queue<int>q;
         q.push(1);
