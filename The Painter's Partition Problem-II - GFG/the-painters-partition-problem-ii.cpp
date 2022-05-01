@@ -27,12 +27,13 @@ class Solution
             else
             work+= arr[i];
             
-            if(people > k)
-            return false;
+            // if(people > k)
+            // return false;
         }
         // cout<<maxWork<<" "<<people<<" "<<k<<endl;
-      
+        if(people <= k)
         return true;
+        return false;
     }
     long long minTime(int arr[], int n, int k)
     {
