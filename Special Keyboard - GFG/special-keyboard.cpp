@@ -13,20 +13,21 @@ public:
         // code here
         if(N <= 6)
         return N;
-        int a[N+1];
-        for(int i = 1; i <= 6; i++ )
-        a[i] = i;
+        
+        long long dp[N+1];
+        for(int i = 1; i <= 6; i++)
+        dp[i] = i;
+       
         
         for(int i = 7; i <= N; i++) {
-            int maxi = 1;
+            long long maxi = 0;
             for(int j = 2; j <= i-2; j++) {
-                maxi = max(maxi, (j*a[i-j-1]));
+                
+                maxi = max(maxi, j*dp[i-j-1]);
             }
-            a[i] = maxi;
+            dp[i] = maxi;
         }
-        // for(int i = 7; i <= N; i++)
-        // cout<<a[i]<<" ";
-        return a[N];
+        return dp[N];
     }
 };
 
