@@ -11,32 +11,35 @@
  */
 class Solution {
 public:
-    void findPaths(TreeNode* root, int targetSum, long long currSum, map<long long, long long>&mp, int &count) {
+    void findPathSum(TreeNode *root, long long sum, int targetSum, int &count, map<long long, int>&mp) {
+        
         if(root == NULL)
             return;
         
-        // if(root->val == targetSum)
-        //     count ++;
-        // if(currSum == targetSum)
-        //     count++;
-        currSum += root->val;
-        if(mp.count(currSum-targetSum))
-            count+= mp[currSum-targetSum];
+        sum += root->val;
+        // cout<<sum<<" ";
+        if(mp.count(sum-targetSum) ) 
+            count += mp[sum-targetSum];
+        if(sum == targetSum)
+            count++;
+            
+        mp[sum] ++;
         
-        mp[currSum]++;
-        findPaths(root->left, targetSum, currSum, mp, count);
-        findPaths(root->right, targetSum, currSum, mp, count);
-        mp[currSum]--;
+        findPathSum(root->left, sum, targetSum, count, mp);
+        findPathSum(root->right, sum, targetSum, count, mp);
+            
+        mp[sum]--;
+        
         
     }
     int pathSum(TreeNode* root, int targetSum) {
         
-        map<long long, long long>mp;
+        map<long long, int>mp;
+        
         int count = 0;
-        mp[0] = 1;
-        findPaths(root, targetSum, 0, mp, count);
+        findPathSum(root, 0, targetSum, count, mp);
+            
         return count;
-        
-        
+               
     }
 };
