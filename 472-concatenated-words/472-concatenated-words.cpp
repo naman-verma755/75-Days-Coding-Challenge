@@ -1,49 +1,45 @@
 class Solution {
 public:
-    bool func( string word, map<string, int>&mp, map<string, int>&dp) {
-        // cout<<word<<" ";
-        int n = word.length();
-        if( n == 0)
+    bool find(string word, map<string, int>&mp) {
+        
+        if(word.length() == 0)
             return true;
-        if(dp.count(word))
-            return dp[word];
-        string s = "";
-        for(int j = 0; j < n; j++) {
-            s+=word[j];
-            if(mp.count(s) && func( word.substr(j+1, n), mp, dp )) {
-                return dp[word] = true;
-            }
+    
+        string res = "";
+        for(int i = 0; i < word.length(); i++) {
+            res += word[i];
+            if(mp.count(res) && find(word.substr(i+1, word.length()), mp))
+                return true;
         }
+        
         return false;
+        
+        
     }
     vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
-        map<string, int>mp, visited, dp;
         
-        for(int i = 0; i < words.size(); i++) {
-            mp[words[i]] = 1;
-        }
+         map<string, int>mp;
+        set<string>subAns;
+        for(string &word : words) 
+            mp[word] = 1;
         vector<string>ans;
-        for(int i = 0; i < words.size(); i++) {
-            string s = "";
-            // cout<<words[i]<<" ";
-            if(words[i].length() == 1)
+        for(string &word : words) {
+            if(word == "")
                 continue;
-            for(int j = 0; j < words[i].length(); j++) {
-                
-                s += words[i][j];
-                
-                if(mp.count(s) && j < words[i].length()-1) {
-                    if(func( words[i].substr(j+1, words[i].length()), mp, dp))
-                        if(!visited[words[i]]) {
-                            ans.push_back(words[i]);
-                            visited[words[i]]++;
-                        }
-                        
+            // if(!mp.count(word)) {
+                // cout<<"y";
+                string res = "";
+                for(int i = 0; i < word.length()-1; i++) {
+                    // cout<<word.length()-1<<" ";
+                    // cout<<"f";
+                    res += word[i];
+                    if(mp.count(res) && find(word.substr(i+1, word.length()), mp))
+                        subAns.insert(word);
                 }
-                
-            }
-            // cout<<endl;
+            // }
         }
+        for(auto word : subAns)
+            ans.push_back(word);
         return ans;
     }
 };
