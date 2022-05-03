@@ -25,7 +25,7 @@ public:
     }
     int countPairs(vector<int>&a) {
         int size = a.size();
-        // sort(a.begin(), a.end());
+       
         if(size == 1)
             return 0;
         int maxi1 = INT_MIN, maxi2 = INT_MIN;
@@ -38,29 +38,21 @@ public:
             else if(meal > maxi2)
                 maxi2 = meal;
         }
-        // cout<<maxi1<<maxi2<<" ";
+   
         vector<long long>g;
         func(g, (maxi1+maxi2));
         map<long long, long long>mp;
-        // mp[a[0]]++;
+     
         long long count = 0;
-        // for(auto it : g)
-        //     cout<<it<<" ";
         for(int i = 0; i < size; i++) {
              int j = bin(g, a[i]);
-            // cout<<j<<" ";
              for(; j < g.size(); j++ ) {
                 if(mp.count(g[j]-a[i])) {
                     count = (count%mod+mp[g[j]-a[i]]%mod)%mod;
                 }
                 
             }
-//             for(long long k : g) {
-//                 if(mp.count(k-a[i])) {
-//                     count = (count%mod+mp[k-a[i]]%mod)%mod;
-//                 }
-                
-//             }
+
             mp[a[i]]++;
             
         }
