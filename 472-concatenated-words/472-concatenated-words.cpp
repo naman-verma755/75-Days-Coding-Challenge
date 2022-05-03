@@ -5,15 +5,16 @@ public:
         
         if(word.length() == 0)
             return true;
-    
+        if(dp.count(word))
+            return dp[word];
         string res = "";
         for(int i = 0; i < word.length(); i++) {
             res += word[i];
             if(mp.count(res) && find(word.substr(i+1, word.length()), mp))
-                return true;
+                return dp[res] = true;
         }
         
-        return false;
+        return dp[res] = false;
         
         
     }
