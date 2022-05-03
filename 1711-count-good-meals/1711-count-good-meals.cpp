@@ -1,6 +1,22 @@
 class Solution {
 public:
     long long mod = 1000000007;
+    int bin(vector<long long>&a, int key) {
+        
+        int ans = 0;
+        
+        int start = 0, end = a.size()-1; 
+        while(start <= end) {
+            int mid = (start+end)/2;
+            if(a[mid] >= key) {
+                ans = mid;
+                end = mid-1;
+            }
+            else
+                start = mid+1;
+        }
+        return ans;
+    }
     void func(vector<long long>&mp, int maxi) {
         
         for(long long i = 1; i <= maxi; i = i*2) {
@@ -31,13 +47,20 @@ public:
         // for(auto it : g)
         //     cout<<it<<" ";
         for(int i = 0; i < size; i++) {
-            
-            for(long long k : g) {
-                if(mp.count(k-a[i])) {
-                    count = (count%mod+mp[k-a[i]]%mod)%mod;
+             int j = bin(g, a[i]);
+            // cout<<j<<" ";
+             for(; j < g.size(); j++ ) {
+                if(mp.count(g[j]-a[i])) {
+                    count = (count%mod+mp[g[j]-a[i]]%mod)%mod;
                 }
                 
             }
+//             for(long long k : g) {
+//                 if(mp.count(k-a[i])) {
+//                     count = (count%mod+mp[k-a[i]]%mod)%mod;
+//                 }
+                
+//             }
             mp[a[i]]++;
             
         }
