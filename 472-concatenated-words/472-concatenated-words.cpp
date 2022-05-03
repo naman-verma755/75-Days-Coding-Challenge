@@ -1,5 +1,6 @@
 class Solution {
 public:
+    map<string, int>dp;
     bool find(string word, map<string, int>&mp) {
         
         if(word.length() == 0)
