@@ -2,44 +2,48 @@ class Solution {
 public:
     int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
         
+        set<string>st;
+        
+        for(string word: wordList)
+            st.insert(word);
         queue<string>q;
         q.push(beginWord);
-        map<string, int>mp;
-        for(int i = 0; i < wordList.size(); i++) {
-            mp[wordList[i]] ++;
-        }
-        // if(mp.count(beginWord))
-        //     mp.erase(beginWord);
-        int steps = 0;
+        int count = 1;
         while(!q.empty()) {
+            
             int size = q.size();
+            
             while(size > 0) {
                 
-                string top = q.front();
-                if(top == endWord)
-                            return steps+1;
+                string word = q.front();
                 q.pop();
                 
-                for(int i = 0; i < top.length(); i++) {
-                    char ch = top[i];
-                    for(char c = 'a'; c <= 'z'; c++ ) {
-                        if(c == ch)
-                            continue;
-                        top[i] = c;
+                for(int i = 0; i < word.length(); i++) {
+
+                    char prev = word[i];
+                    string re = word;
+                    
+                    for(char ch = 'a'; ch <= 'z'; ch++) {
+                        word[i] = ch;
                         
-                        if(mp.count(top)) {
-                            q.push(top);
-                            mp.erase(top);
+                        
+                        if(st.find(word) != st.end()) {
+                            if(word == endWord){
+                            // cout<<word<<" ";
+                            // cout<<word<<" "<<endWord<<endl;
+                            return count+1;
+                        }
+                        q.push(word);
+                            st.erase(word);
                         }
                     }
-                    top[i] = ch;
+                    word[i] = prev;
                 }
                 size--;
             }
-            steps++;
-            
+            count++;
         }
-    return 0;
+        return 0;
         
     }
 };
