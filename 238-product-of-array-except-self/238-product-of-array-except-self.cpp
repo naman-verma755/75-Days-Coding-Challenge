@@ -4,7 +4,7 @@ public:
         
         
         int size = nums.size();
-        vector<int>ans(size);
+        // vector<int>ans(size);
         int prefix[size];
         int suffix[size];
         prefix[0] = nums[0];
@@ -17,12 +17,12 @@ public:
             suffix[j] = nums[j]*suffix[j+1];
         // for(auto it : prefix)
         //     cout<<it<<" ";
-        ans[0] = suffix[1];
-        ans[size-1] = prefix[size-2];
+        nums[0] = suffix[1];
+        nums[size-1] = prefix[size-2];
         for(int i = 1; i < size-1; i++)
-            ans[i] = prefix[i-1]*suffix[i+1];
+            nums[i] = prefix[i-1]*suffix[i+1];
         
         
-        return ans;
+        return nums;
     }
 };
