@@ -1,45 +1,54 @@
 class Solution {
 public:
     string simplifyPath(string path) {
-        int pathLength = path.length();
+        
+        int len = path.length();
         stack<string>st;
-    
         int i = 0;
-        while(i < pathLength) {
-         
-            if(path[i] == '/') {
-                if(st.empty() || st.top() != "/") {
+        
+        while(i < len) {
+            
+          
+            if( path[i] == '/' ) {
+                
+                if(st.empty() || st.top() != "/")
+                {
                     st.push("/");
                 }
                 i++;
                 continue;
+                
             }
-       
-            string res = "";
-            while(i < pathLength && path[i] != '/') {
-                res += path[i];
-                i++;
-            }
-            
-            if(res == "..") {
-                if(st.size() > 1) {
-                    st.pop();
-                    st.pop();
+           
+                string s = "";
+                while(i < path.length() && path[i] != '/') {
+                    s += path[i];
+                    i++;
                 }
-            }
-            else if(res == ".")
-                continue;
-            else
-                st.push(res);
+            cout<<s<<" ";
+                if(s == ".")
+                    continue;
+                if(s == ".." )
+                {
+                    if(st.size() > 1) {
+                        st.pop();
+                        st.pop();
+                    }
+                }
+                else {
+                    st.push(s);
+                }
+                
+            
+            
         }
-        
-        string ans = "";
-        if(st.size() > 1 && st.top() == "/")
+        if(st.size() != 1 && st.top() == "/")
             st.pop();
-        while(!st.empty()) {
-            ans = st.top()+ans;
+        string ansPath = "";
+        while(!st.empty()  ) {
+            ansPath = st.top() + ansPath;
             st.pop();
         }
-        return ans;
+        return ansPath;
     }
 };
