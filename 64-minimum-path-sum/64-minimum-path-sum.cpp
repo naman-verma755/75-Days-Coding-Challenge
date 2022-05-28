@@ -1,22 +1,23 @@
 class Solution {
 public:
-    int func(int i, int j, vector<vector<int>>&grid, vector<vector<int>>&dp) {
-        
-        int row = grid.size();
-        int col = grid[0].size();
-        if(i >= row || j >= col )
-            return INT_MAX;
-        // cout<<grid[i][j]<<" ";
-        if(i == row-1 && j == col-1)
-            return grid[i][j];
-        if(dp[i][j] != -1)
-            return dp[i][j];
-        return dp[i][j] = min(func(i+1, j, grid, dp), func(i, j+1, grid, dp))+grid[i][j];
-        
-        
-    }
+    
     int minPathSum(vector<vector<int>>& grid) {
-        vector<vector<int>>dp(grid.size()+1, vector<int>(grid[0].size()+1, -1));
-        return func(0, 0, grid, dp);
+        int rows = grid.size();
+        int columns = grid[0].size();
+        int dp[rows][columns];
+        dp[0][0] = grid[0][0];
+        for(int col = 1; col < columns; col ++)
+            dp[0][col] = grid[0][col] + dp[0][col-1];
+        for(int row = 1; row < rows; row++) 
+            dp[row][0] = grid[row][0] + dp[row-1][0];
+        
+        for(int row = 1; row < rows; row++) {
+            for(int col = 1; col < columns; col++) {
+                dp[row][col] = grid[row][col] + min(dp[row-1][col],dp[row][col-1]);
+            }
+        }
+        
+        return dp[rows-1][columns-1];
+   
     }
 };
