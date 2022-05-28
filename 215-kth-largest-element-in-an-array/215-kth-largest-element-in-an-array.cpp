@@ -1,87 +1,73 @@
-// class Solution {
-// public:
-//     int findKthLargest(vector<int>& nums, int k) {
-        
-//     }
-// };
+class priorityQueue {
+    public:
+    int a[1000000];
+    int size = 0;
+    
+    void heapify(int);
+    void buildHeap(vector<int>&v, int k);
+    int top() {
+        return a[0];
+    }
+    
+    void pop();
+    void push(int element);
+    
+};
+int parent(int i) { return (i-1)/2; }
+void priorityQueue::pop() {
+   a[0] = a[size-1];
+        size--;
+       heapify(0);
+}
+void priorityQueue::push(int element) {
+    a[size] = element;
+    size++;
+    int i = size-1;
+    while(i > 0 && a[(i-1)/2] > a[i])
+    {
+        swap(a[(i-1)/2], a[i]);
+        i = (i-1)/2;
+    }
+}
+ void priorityQueue::buildHeap(vector<int>&v, int k) {
+        for(int i = 0; i < k; i++)
+        {
+            a[i] = v[i];
+            size++;
+        }
+        for(int i = size-1; i >= 0; i --) {
+            heapify(i);
+        }
+    }
+
+void priorityQueue::heapify(int index) {
+    int left = 2*index+1;
+    int right = 2*index+2;
+    int mini = index;
+    if(left < size && a[left] < a[mini])
+        mini = left;
+    if(right < size && a[right] < a[mini])
+        mini = right;
+    if(mini != index)
+    {
+        swap(a[mini], a[index]);
+        heapify( mini);
+    }
+}
+
 class Solution {
 public:
-   int heap_size = 0;
-    // int capacity = ;
-    int harr[1000000];
-     int left(int i) { return (2*i + 1); }
-  int parent(int i) { return (i-1)/2; }
-    int right(int i) { return (2*i + 2); }
-  
-    void MinHeapify(int i)
-{
-    int l = left(i);
-    int r = right(i);
-    int smallest = i;
-    if (l < heap_size && harr[l] < harr[i])
-        smallest = l;
-    if (r < heap_size && harr[r] < harr[smallest])
-        smallest = r;
-    if (smallest != i)
-    {
-        swap(harr[i], harr[smallest]);
-        MinHeapify(smallest);
-    }
-}
-    int extractMin()
-{
-    if (heap_size <= 0)
-        return INT_MAX;
-    if (heap_size == 1)
-    {
-        heap_size--;
-        return harr[0];
-    }
-  
-    // Store the minimum value, and remove it from heap
-    int root = harr[0];
-    harr[0] = harr[heap_size-1];
-    heap_size--;
-    MinHeapify(0);
-  
-    return root;
-}
-//     void deleteKey(int i)
-// {
-//     decreaseKey(i, INT_MIN);
-//     extractMin();
-// }
     
-    void push(int k)
-{
-    // if (heap_size == capacity)
-    // {
-    //     cout << "\nOverflow: Could not insertKey\n";
-    //     return;
-    // }
-  
-    // First insert the new key at the end
-    heap_size++;
-    int i = heap_size - 1;
-    harr[i] = k;
-  
-    // Fix the min heap property if it is violated
-    while (i != 0 && harr[parent(i)] > harr[i])
-    {
-       swap(harr[i], harr[parent(i)]);
-       i = parent(i);
-    }
-}
     int findKthLargest(vector<int>& nums, int k) {
-        vector<int>v;
-        for(auto it : nums) {
-            push(it);
+        priorityQueue pq;
+        pq.buildHeap(nums, k);
+        int i = k;
+        for(; i < nums.size(); i++) {
+            pq.push(nums[i]);
             
-            if(heap_size > k)
-                int r = extractMin();
+            if(pq.size > k)
+                pq.pop();
         }
-        // for(int i = 0; i < heap_size; i++)
-        //     cout<<harr[i]<<" ";
-        return harr[0];
+        return pq.top();
     }
 };
