@@ -16,24 +16,41 @@ public:
         }
         return pivot;
     }
-    int search(vector<int>& nums, int target) {
+    int findMin(vector<int>&arr) {
+        int size = arr.size();
+        if(arr[0] <= arr[size-1])
+            return 0;
         
-        int pivot = findPivot(nums);
-        
-        int size = nums.size();
-        int start = 0, end = size-1;
+        int start = 0, end = size-1, ans = 0;
         while(start <= end) {
             int mid = (start+end)/2;
-            int r = (mid+pivot)%size;
-            
-            if(nums[r] == target)
-                return r;
-            else if(nums[r] < target)
+            if(arr[mid] > arr[end]) {
+                ans = mid;
                 start = mid+1;
+            }
             else
                 end = mid-1;
         }
+        return ans+1;
+    }
+    int search(vector<int>& nums, int target) {
+        int size = nums.size();
+        int k = findPivot(nums);
+        // cout<<k<<" ";
+        int start = 0, end = size-1, ans = 0;
+        while(start <= end) {
+            int mid = (start+end)/2;
+            
+            int l = (mid+k)%size;
+            // cout<<l<<" ";
+            if(nums[l] == target)
+                return l;
+            else if(nums[l] > target) {
+                end = mid-1;
+            }
+            else
+                start = mid+1;
+        }
         return -1;
-        
     }
 };
