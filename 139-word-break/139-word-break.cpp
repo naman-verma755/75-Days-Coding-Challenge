@@ -1,33 +1,28 @@
 class Solution {
 public:
-    bool find(string s, map<string, int>&mp, map<string, bool>&dp) {
+    bool func(string s, set<string>&st, map<string, bool>&mp) {
         
         if(s.length() == 0)
+            return false;
+        if(st.find(s) != st.end())
             return true;
-        
-        if(dp.count(s))
-            return dp[s];
-        // cout<<s<<" ";
-        string res = "";
-        
+        if(mp.count(s))
+            return mp[s];
+        string temp = "";
         for(int i = 0; i < s.length(); i++) {
-            
-            res += s[i];
-            if(mp.count(res) && find(s.substr(i+1, s.length()), mp, dp))
-               return dp[res] = true;
-               
+            temp += s[i];
+            if(st.find(temp) != st.end() && func(s.substr(i+1, s.length()), st, mp))
+               return mp[s] = true;
         }
-        return dp[res] = false;
+        return mp[s] = false;
     }
     bool wordBreak(string s, vector<string>& wordDict) {
         
-        map<string, int>mp;
-        map<string, bool>dp;
-        for(string &word : wordDict)
-            mp[word] = 1;
-        
-        if(find(s, mp, dp))
-            return true;
-        return false;
+        set<string>st;
+        map<string, bool>mp;
+        for(string word : wordDict) {
+            st.insert(word);
+        }
+       return func(s, st, mp);
     }
 };
