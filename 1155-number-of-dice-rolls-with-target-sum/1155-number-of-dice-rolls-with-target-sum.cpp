@@ -18,7 +18,27 @@ public:
         return dp[index][target] = sum;
     }
     int numRollsToTarget(int n, int k, int target) {
-        vector<vector<int>>dp(n+1, vector<int>(target+1, -1));
-        return findWays(0, n, k, target, dp);
+        // vector<vector<int>>dp(n+1, vector<int>(target+1, 0));
+         long long mod = 1000000007;
+        int dp[n+1][target+1];
+        
+        for(int i = 0; i <= n; i++)
+            dp[i][0] = 0;
+        for(int j = 0; j <= target; j++)
+            dp[0][j] = 0;
+        dp[0][0] = 1;
+        
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= target; j++) {
+                long long sum = 0;
+                for(int q = 1; q <= k; q++) {
+                    if(j-q >= 0)
+                    sum = (sum+dp[i-1][j-q])%mod;
+                }
+                dp[i][j] = sum;
+            }
+        }
+        
+        return dp[n][target];
     }
 };
