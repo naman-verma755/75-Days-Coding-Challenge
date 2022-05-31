@@ -1,38 +1,32 @@
 class Solution {
 public:
-    
-    void find(string s, string prev, vector<string>& wordDict, map<string, int>&mp, vector<string>&ans) {
-        
+    void findAll(string s, set<string>&st, vector<string>&subAns,  string ans) {
         
         if(s.length() == 0) {
-            ans.push_back(prev);
+            subAns.push_back(ans.substr(1,ans.length()));
+            return;
         }
         
-        string res = "";
-        
+        string temp = "";
         for(int i = 0; i < s.length(); i++) {
             
-            res += s[i];
-            
-            if(mp.count(res)) {
-                if(prev != "") {
-                    find(s.substr(i+1, s.length()), prev+" "+res, wordDict, mp, ans);
-                }
-                else
-                 find(s.substr(i+1, s.length()), res, wordDict, mp, ans);
-                
-                
+            temp += s[i];
+            if(st.find(temp) != st.end())
+            {
+                // subAns.push_back(temp);
+                findAll(s.substr(i+1, s.length()), st, subAns, ans+" "+temp);
+                // subAns.pop_back();
             }
         }
     }
     vector<string> wordBreak(string s, vector<string>& wordDict) {
-
-        vector<string>ans;
-        map<string, int>mp;
-        for(string &word : wordDict) 
-            mp[word] = 1;
-        find(s, "", wordDict, mp, ans);
         
-        return ans;
+        set<string>st;
+        for(string word : wordDict) 
+            st.insert(word);
+        vector<string>subAns;
+        string ans;
+        findAll(s, st, subAns, ans);
+        return subAns;
     }
 };
