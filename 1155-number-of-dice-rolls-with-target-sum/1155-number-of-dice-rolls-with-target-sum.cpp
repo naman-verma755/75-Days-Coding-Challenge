@@ -34,6 +34,8 @@ public:
                 for(int q = 1; q <= k; q++) {
                     if(j-q >= 0)
                     sum = (sum+dp[i-1][j-q])%mod;
+                    else
+                        break;
                 }
                 dp[i][j] = sum;
             }
