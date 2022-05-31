@@ -1,29 +1,24 @@
 class Solution {
 public:
-  
-    int numRollsToTarget(int n, int k, int target) {
-        int mod = 1000000007;
-
-        vector<int>prev(target+1,0);
+    int findWays(int index, int n, int k, int target, vector<vector<int>>&dp) {
+        long long mod = 1000000007;
+        if(target == 0 && index == n)
+            return 1;
         
-        prev[0] = 1;
-      
-        vector<int>curr(target+1, 0);
-        for(int i = 1; i <= n; i++) {
-            
-            for(int j = 1; j <= target; j++) {
-                curr[j] = 0;
-                for(int e = 1; e <= k; e++) {
-                    if(e <= j)
-                    curr[j] = (curr[j]%mod+prev[j-e]%mod)%mod;
-                  
-                    
-                }
-            }
-            prev = curr;
+        if(index == n || target < 0)
+            return 0;
+        
+        if(dp[index][target] != -1)
+            return dp[index][target];
+        
+        long long sum = 0;
+        for(int j = 1; j <= k; j++) {
+            sum = (sum+findWays(index+1, n, k, target-j, dp))%mod;
         }
-        return prev[target];
-
-        
+        return dp[index][target] = sum;
+    }
+    int numRollsToTarget(int n, int k, int target) {
+        vector<vector<int>>dp(n+1, vector<int>(target+1, -1));
+        return findWays(0, n, k, target, dp);
     }
 };
