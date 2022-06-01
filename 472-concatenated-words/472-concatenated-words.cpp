@@ -1,16 +1,16 @@
 class Solution {
 public:
     map<string, int>dp;
-    bool find(string word, map<string, int>&mp) {
+    bool find(string word, set<string>&mp) {
         
         if(word.length() == 0)
             return true;
-        if(dp.count(word))
-            return dp[word];
+         if(dp.count(word))
+             return dp[word];
         string res = "";
         for(int i = 0; i < word.length(); i++) {
             res += word[i];
-            if(mp.count(res) && find(word.substr(i+1, word.length()), mp))
+            if(mp.find(res) != mp.end() && find(word.substr(i+1, word.length()), mp))
                 return dp[res] = true;
         }
         
@@ -20,11 +20,10 @@ public:
     }
     vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
         
-         map<string, int>mp;
-        set<string>subAns;
+         set<string>mp;
         for(string &word : words) 
-            mp[word] = 1;
-        vector<string>ans;
+            mp.insert(word);
+        set<string>ans;
         for(string &word : words) {
             if(word == "")
                 continue;
@@ -35,13 +34,14 @@ public:
                     // cout<<word.length()-1<<" ";
                     // cout<<"f";
                     res += word[i];
-                    if(mp.count(res) && find(word.substr(i+1, word.length()), mp))
-                        subAns.insert(word);
+                    if(mp.find(res) != mp.end() && find(word.substr(i+1, word.length()), mp))
+                        ans.insert(word);
                 }
             // }
         }
-        for(auto word : subAns)
-            ans.push_back(word);
-        return ans;
+        vector<string>mainAns;
+        for(auto it : ans)
+            mainAns.push_back(it);
+        return mainAns;
     }
 };
