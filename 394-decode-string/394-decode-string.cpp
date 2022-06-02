@@ -1,66 +1,62 @@
 class Solution {
 public:
-    string multiply(string num, string str) {
-        // cout<<num<<endl;
-       int n = stoi(num);
-        int i = 0;
-        string re = "";
-        while(i < n) {
-            re += str;
-            i++;
-            
+    string func(string st, string re) {
+        int k = stoi(st);
+        // int r = stoi(re);
+        string te = "";
+        while(k > 0) {
+            te = te+re;
+            k--;
         }
-        return re;
+        return te;
+        
     }
-    
     string decodeString(string s) {
+        
+        int i = 0;
+        int len = s.length();
         stack<string>st;
-        for(int i = 0; i < s.length(); ) {
-            
-            string temp = "";
-            while(i < s.length() && s[i] >= 'a' && s[i] <='z') {
-                temp += s[i];
-                i++;
-            }
-            if(temp != "")
-                st.push(temp);
-            if(i >= s.length())
-                break;
+        while( i < len) {
+            // cout<<i<<" ";
             if(s[i] == ']') {
-                string r = "";
+                string ans = "";
                 while(!st.empty() && st.top() != "[") {
-                    r = st.top()+r;
+                    ans = st.top()+ans;
                     st.pop();
-                    
                 }
-               
                 st.pop();
-                string num = st.top();
+                string res = func(st.top(), ans);
+                // cout<<res<<" ";
                 st.pop();
-                string str = multiply(num, r);
-                st.push(str);
+                st.push(res);
+                i++;
+                
                 
             }
-            else if(s[i] >= '1' && s[i] <='9') {
-                string r = "";
-                while(i < s.length() && s[i] >= '0' && s[i] <= '9') {
-                    r += s[i];
+            else if(s[i] == '[') {
+                st.push("[");
+                i++;
+                
+            }
+            else if(s[i] >= '0' && s[i] <= '9'){
+                string er = "";
+                while(i < len && (s[i] >= '0' && s[i] <= '9')) {
+                    er = er + s[i];
                     i++;
                 }
-                st.push(r);
-                continue;
+                st.push(er);
             }
-            else {
-                string temp = "";
-                temp +=s[i];
-                st.push(temp);
+            else if(s[i] >= 'a' && s[i] <= 'z') {
+                string er = "";
+                while(i < len && (s[i] >= 'a' && s[i] <= 'z')) {
+                    er = er + s[i];
+                    i++;
+                }
+                st.push(er);
             }
-           
-            i++;
         }
-        string ans ="";
-        while(!st.empty())
-        {
+        string ans = "";
+        while(!st.empty()) {
             ans = st.top()+ans;
             st.pop();
         }
