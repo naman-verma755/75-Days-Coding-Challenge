@@ -1,56 +1,55 @@
 class Solution {
 public:
-//     int func(int index, int maxi, vector<int>&jobDifficulty, int d, int days, vector<vector<int>>&dp) {
-//         int size = jobDifficulty.size();
-//         if(index >= size && d < days)
+    
+//     int func(int i, int d, int D, int maxi, vector<int>&job, vector<vector<int>>&dp) {
+       
+        // int k1 = 0;
+//         if(d <= D-1 && i == job.size())
 //             return INT_MAX;
         
-//         if(d == days) {
-//             for(int i = index; i < size; i++)
-//                 maxi = max(maxi, jobDifficulty[i]);
-                
+//         if(d == D-1) {
+//             for(int j = i; j < job.size(); j++)
+//                 maxi= max(job[j], maxi);
 //             return maxi;
 //         }
-//         if(dp[index][d] != -1)
-//             return dp[index][d];
-//         int k1 = func(index+1, max(maxi, jobDifficulty[index]), jobDifficulty, d, days, dp);
-//         int k2 = func(index+1, jobDifficulty[index], jobDifficulty, d+1, days, dp);
-//             if(k2 != INT_MAX)
-//                 k2 += maxi;
-//         return dp[index][d] = min(k1, k2);
+//         // if(dp[i][d] != -1)
+//         //     return dp[i][d];
+        
+//         maxi = max(job[i], maxi);
+//         int k1 = func(i+1, d+1, D, 0, job, dp);
+//         if(k1 != INT_MAX)
+//             k1 += maxi;
+//         int k2 = func(i+1, d, D,  maxi, job, dp);
+//         // cout<<k1<<" "<<k2<<endl;
+        
+//         return min(k1, k2);
 //     }
-    int minDifficulty(vector<int>& jobDifficulty, int d) {
-        // vector<vector<int>>dp(jobDifficulty.size()+1, vector<int>(d+1, -1));
-        // int r =  func(0, 0, jobDifficulty, 0, d, dp);
-        // if(r == INT_MAX)
-        //     return -1;
-        // return r;
-        int size = jobDifficulty.size();
-        if(size < d)
-            return -1;
-        int dp[size];
-        for(int day = 1; day <= d; day++) {
-            for(int i = 0; i <= size-day; i++) {
-                int maxi = INT_MIN, re = INT_MAX;
-                for(int k = i; k <= size-day; k++) {
-                    if(day == 1)
-                        maxi = max(jobDifficulty[k], maxi);
-                    else 
-                    {
-                        maxi = max(maxi, jobDifficulty[k]);
-                        // cout<<(maxi)<<" ";
-                        re = min(re, (maxi+dp[k+1]));
-                    }
+    
+    int minDifficulty(vector<int>& job, int d) {
+        int size = job.size();
+       if(size < d)
+           return -1;
+        int D = d;
+        vector<int>dp(size+1, 0);
+        for( d = 1; d <= D; d++) {
+            for(int i = 0; i < size; i++) {
+                int maxi = job[i], r = INT_MAX;
+                for(int j = i; j <= size-d; j++) {
+                    maxi = max(maxi, job[j]);
+                    
+                    r = min(r, maxi+dp[j+1]);
+                    
                 }
-                // cout<<endl;
                 
-                if(day == 1)
-                    dp[i] = maxi;
+                if(d == 1)
+                dp[i] = maxi;
                 else
-                    dp[i] = re;
-                
+                dp[i] = r;
             }
         }
+        // if(dp[0] == INT_MAX)
+        //     return -1;
         return dp[0];
+        
     }
 };
