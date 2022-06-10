@@ -6,38 +6,33 @@ using namespace std;
 class Solution {
   public:
     // Function to detect cycle in an undirected graph.
-    
-    bool isCyce(int node, int parent, vector<int>adj[], bool visited[]) {
-        // cout<<node<<" ";
-        visited[node] = true;
+    bool dfs(int src, int parent, vector<int>adj[], bool visited[]) {
         
-        for(int i = 0; i < adj[node].size(); i++) {
-            if(adj[node][i] != parent) {
-            if(visited[adj[node][i]] || isCyce(adj[node][i], node, adj, visited))
-            return true;
-         
+        visited[src] = true;
+        // cout<<src<<" ";
+        for(auto it : adj[src]) {
+            if(it != parent) {
+                if(visited[it] || dfs(it, src, adj, visited))
+                return true;
             }
-        }
+           
+            }
+        
         return false;
     }
     bool isCycle(int V, vector<int> adj[]) {
         // Code here
+        bool visited[V+1];
+        for(int i = 0; i < V; i++)
+        visited[i] = false;
         
-        bool visited[V];
-        memset(visited, false, sizeof(visited));
-    
         for(int i = 0; i < V; i++) {
-            if(!visited[i]) {
-              
-            if(isCyce(i, -1, adj, visited))
-            return true;
-           
+              if(!visited[i]) {
+                  if(dfs(i, -1,adj, visited))
+                  return true;
               }
         }
-            // if(!visited[i] && !isCycle(i, -1,adj, visited));
-            // return true;
         
-    
         return false;
     }
 };
