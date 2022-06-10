@@ -6,39 +6,41 @@ using namespace std;
 class Solution {
   public:
     // Function to detect cycle in a directed graph.
-    bool isCycle(int node, bool visited[], bool recstack[], vector<int>adj[]) {
+    bool dfs(int src, vector<int>adj[], bool visited[], bool restack[]) {
         
-        visited[node] = true;
-        recstack[node] = true;
+        visited[src] = true;
+        restack[src] = true;
         
-        for(auto it : adj[node]) {
+        
+        for(auto it: adj[src]) {
+            
             if(!visited[it]) {
-                if(isCycle(it, visited, recstack, adj))
-                return true;
-            } else if(recstack[it]) {
+                if(dfs(it, adj, visited, restack))
                 return true;
             }
+            else if(restack[it])
+            return true;
         }
-        recstack[node] = false;
+        restack[src] = false;
         return false;
+        
     }
     bool isCyclic(int V, vector<int> adj[]) {
         // code here
         
-        bool recstack[V];
-    bool visited[V];
-    memset(recstack, false, sizeof(recstack));
-    memset(visited, false, sizeof(visited));
-    
-    
-    for(int i = 0; i < V; i++) {
         
-        if(!visited[i]) {
-            if(isCycle(i, visited, recstack, adj))
+        bool visited[V];
+        bool restack[V];
+        for(int i = 0; i < V; i++) {
+            visited[i] = false;
+            restack[i] = false;
+        }
+        
+        for(int i = 0; i < V; i++) {
+            if(dfs(i, adj, visited, restack))
             return true;
         }
-    }
-    return false;
+        return false;
     }
 };
 
