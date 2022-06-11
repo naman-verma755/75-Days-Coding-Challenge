@@ -9,52 +9,55 @@ using namespace std;
 
 class Solution{
     public:
-    void buildGraph(string s1, string s2, vector<int>adj[]) {
+    void buildGraph(int i, string dict[], vector<int>adj[]) {
         
+        string s1 = dict[i];
+        string s2 = dict[i+1];
         
-        int i = 0, j = 0;
-        while( i < s1.length() && j < s2.length()) {
-            if(s1[i] != s2[j]) {
-                adj[s1[i]-'a'].push_back(s2[j]-'a');
-                return;
+        for(int i = 0; i < min(s1.length(), s2.length()); i++) {
+            if(s1[i] != s2[i]) {
+                adj[s1[i]-'a'].push_back(s2[i]-'a');
+                break;
             }
-            i++;
-            j++;
         }
     }
-    void dfs(int i , vector<int>adj[], bool visited[], vector<char>&v) {
+    void dfs(int index, vector<int>adj[], bool visited[], stack<char>&st) {
+        
+        visited[index] = true;
         
         
-        visited[i] = true;
-        
-        for(auto it : adj[i]) {
-            if(!visited[it])
-            dfs(it, adj, visited, v);
+        for(auto it : adj[index]) {
+            if(!visited[it]) 
+            dfs(it, adj, visited, st);
         }
-        v.push_back(char(i+'a'));
+        st.push('a'+index);
     }
-    string findOrder(string dict[], int N, int k) {
+    string findOrder(string dict[], int N, int K) {
         //code here
-        vector<int>adj[k];
+        
+        
+        vector<int>adj[K];
         
         for(int i = 0; i < N-1; i++) {
-                buildGraph(dict[i], dict[i+1], adj);
+            buildGraph(i, dict, adj);
         }
-        
-        bool visited[k];
+        bool visited[K];
         memset(visited, false, sizeof(visited));
         
-        vector<char>v;
-        for(int i = 0; i < k; i++) {
-            if(!visited[i])
-            dfs(i, adj, visited, v);
+        stack<char>st;
+        for(int i = 0; i < K; i++) {
+            
+             if(!visited[i])
+             dfs(i, adj, visited, st);
         }
-        string res = "";
-        for(int i = 0; i < v.size(); i++) {
-            res = v[i]+res;
+        
+        string ans = "";
+        while(!st.empty()) {
+            ans += st.top();
+            st.pop();
         }
-        // cout<<res;
-        return res;
+        // cout<<ans<<endl;
+        return ans;
     }
 };
 
