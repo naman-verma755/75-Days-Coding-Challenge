@@ -49,7 +49,7 @@ class Solution
         int count = 0, cost = 0;
         int i = 0;
         // cout<<v[0][0]<<v[0][1]<<v[0][2];
-        while(i < v.size()) {
+        while(count < V-1) {
             // cout<<v[i][1]<<" "<<v[i][2]<<endl;
             int wt = v[i][0];
             int u = v[i][1];
