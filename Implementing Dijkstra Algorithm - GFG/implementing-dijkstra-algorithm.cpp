@@ -11,36 +11,32 @@ class Solution
     vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
     {
         // Code here
-        vector<int>dist(V);
-        bool visited[V];
-        for(int i = 0; i<V; i++) {
-            dist[i] = INT_MAX;
-            visited[i] = false;
-        }
+        
+        vector<int>dist(V, INT_MAX);
+        
+        
+        
+        set<pair<int, int>>st;  
         dist[S] = 0;
-        set<pair<int, int>> st;
         st.insert({0, S});
-        // visited[S] = true;
+        
         while(!st.empty()) {
             
-            auto it = *(st.begin());
+            pair<int, int>it = *(st.begin());
             st.erase(it);
+            
             int u = it.second;
             int wt1 = it.first;
-            visited[u] = true;
             
-            for(auto it : adj[u]) {
-                
-                int v = it[0], wt2 = it[1];
-                // cout<<wt1+wt2<<endl;
-                if( (wt1+wt2) < dist[v]) {
-                    // cout<<it[0]<<" ";
+            for(vector<int>&edge : adj[u]) {
+                int v = edge[0];
+                int sum = wt1+edge[1];
+                if(sum < dist[v]) {
+                    if(dist[v] != INT_MAX) 
+                    st.erase({dist[v], v});
                     
-                    if(dist[v] != INT_MAX) {
-                        st.erase({wt2, v});
-                    }
-                    dist[v] = (wt1+wt2);
-                    st.insert({dist[v], v});
+                    dist[v] = sum;
+                    st.insert({sum, v});
                 }
             }
         }
@@ -49,13 +45,6 @@ class Solution
 };
 
 
-// 4 5
-// 0 1 9
-// 0 2 1
-// 0 3 1
-// 1 3 3
-// 2 3 2
-// 0
 // { Driver Code Starts.
 
 
