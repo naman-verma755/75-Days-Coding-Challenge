@@ -21,29 +21,35 @@ public:
 
 class Solution {
 public:
-    Node* dfs(Node* node, map<int, Node*>&mp) {
+    Node* buildGraph(Node *nod, map<int, Node*>&st) {
         
         
-        Node* root = new Node(node->val);
-        mp[root->val] = root;
-        vector<Node*>neighbors = node->neighbors;
-        for(int i = 0; i < neighbors.size(); i++) {
-            Node *temp = neighbors[i];
-            if(!mp.count(temp->val)) {
-                root->neighbors.push_back(dfs(temp, mp));
-            }
+        Node *node = new Node(nod->val); 
+        st[nod->val] = node;
+        
+        for(auto it : nod->neighbors) {
+            
+            if(!st.count(it->val))
+                node->neighbors.push_back( buildGraph(it, st));
             else {
-                root->neighbors.push_back(mp[temp->val]);
+                auto temp = st[it->val];
+                node->neighbors.push_back(temp);
             }
+                
         }
+        return node;
         
-        return root;
     }
     Node* cloneGraph(Node* node) {
         if(node == NULL)
-            return NULL;
-        map<int, Node*>mp;
+            return node;
         
-        return dfs(node, mp);
+        map<int, Node*>st;
+        // set<int>st;
+        
+        return buildGraph(node, st);
+        
+        
+        
     }
 };
