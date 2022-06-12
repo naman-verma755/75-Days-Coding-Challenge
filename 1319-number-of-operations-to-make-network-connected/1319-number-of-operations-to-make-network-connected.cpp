@@ -1,57 +1,62 @@
 class Solution {
 public:
     int find(int u, int parent[]) {
-        if(parent[u] == u)
+        
+        if(u == parent[u])
             return u;
         
-        return parent[u] = find(parent[u], parent); // path compression
+        return parent[u] = find(parent[u], parent);
     }
     
-    void unionOf(int u, int v, int parent[], int rank[]) {
+    void unionOf(int u, int v, int rank[], int parent[]) {
         
-        if(rank[u] < rank[v]) 
+        if(rank[u] < rank[v])
             parent[u] = v;
-        else if(rank[u] > rank[v])
+        else if(rank[v] < rank[u])
             parent[v] = u;
         else {
-            rank[u] ++;
+            rank[u]++;
             parent[v] = u;
         }
     }
-    
     int makeConnected(int n, vector<vector<int>>& connections) {
         
-        int rank[n];
+        
         int parent[n];
+        int rank[n];
         for(int i = 0; i < n; i++) {
-            rank[i] = 0;
             parent[i] = i;
+            rank[i] = 0;
         }
-        int extraEdges = 0;
-        for(auto edge : connections) {
+        
+        int count = 0;
+        for(vector<int>&edge: connections) {
+            int sys1 = edge[0];
+            int sys2 = edge[1];
             
-            int vertex1 = edge[0];
-            int vertex2 = edge[1];
+            int parentU = find(sys1, parent);
+            int parentV = find(sys2, parent);
             
-            int parent1 = find(vertex1, parent);
-            int parent2 = find(vertex2, parent);
-            if(parent1 == parent2) {
-                extraEdges++;
+            if(parentU == parentV)
+            {
+                count++;
                 continue;
             }
             
-            unionOf(parent1, parent2, parent, rank);
+            unionOf(parentU, parentV, rank, parent);
+            
+            
         }
-        int disconnectedCom = -1;
+        int components = 0;
         for(int i = 0; i < n; i++) {
-            if(parent[i] == i)
-                disconnectedCom++;
+            if(i == parent[i])
+                components++;
         }
-        
-        if(extraEdges >= disconnectedCom)
-            return disconnectedCom;
-        
+        // cout<<components<<" ";
+        if(count >= components-1)
+            return components-1;
         return -1;
+        
         
     }
 };
