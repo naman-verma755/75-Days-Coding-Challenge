@@ -1,41 +1,35 @@
 class Solution {
 public:
-    void print(stack<char>st) {
-        
+    string removeDuplicateLetters(string s) {
+        // return "";
+        map<char, int>mp;   //storing character and its corresponding last index;
+        for(int i = 0; i < s.length(); i++) {
+            mp[s[i]] = i;
+        }
+        stack<int>st;
+        set<char>se;
+        // cout<<mp['b']<<" ";
+        for(int i = 0; i < s.length(); i++) {
+            
+            if(se.find(s[i]) != se.end())
+                continue;
+            while(!st.empty() && s[st.top()] > s[i] && mp[s[st.top()]] > i) {
+                char ch = s[st.top()];
+                se.erase(ch);
+                st.pop();
+            }
+            // if(se.find(s[i]) == se.end()) {
+                se.insert(s[i]);
+            st.push(i);
+            // }
+            
+            
+        }
+        string ans = "";
         while(!st.empty()) {
-            cout<<st.top()<<endl;
+            ans = s[st.top()]+ans; 
             st.pop();
         }
-    }
-    string removeDuplicateLetters(string s) {
-        
-        stack<char>stk;
-        
-        set<char>st;
-        int lastOcurrence[27];
-        for(int i = 0; i < s.length(); i++) 
-            lastOcurrence[s[i]-'a'] = i;
-        
-        for(int i = 0; i < s.length(); i++) {
-            if(st.find(s[i]) != st.end())
-                continue;
-            while( !stk.empty() && (stk.top() > s[i] && lastOcurrence[stk.top()-'a'] > i)) {
-                st.erase(stk.top());
-                stk.pop();
-            }
-                  
-            if(st.find(s[i]) == st.end()) {
-                st.insert(s[i]);
-                  stk.push(s[i]);
-            }
-        }
-                  
-        string ans = "";
-        while(!stk.empty()) {
-            ans = stk.top()+ans;
-            stk.pop();
-        }
-                  return ans;
-            
+        return ans;
     }
 };
