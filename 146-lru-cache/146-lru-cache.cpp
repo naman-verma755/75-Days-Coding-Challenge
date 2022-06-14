@@ -1,75 +1,76 @@
-struct node {
-    
+struct Node{
     int key;
-    int val;
-    node *next;
-    node *prev;
+    int value;
+    Node *left;
+    Node *right;
     
-    node(int _key, int _val) {
-        key = _key;
-        val = _val;
+    Node(int key_, int value_) {
+        key = key_;
+        value = value_;
+        left = right = NULL;
     }
 };
 
 class LRUCache {
 public:
-    node *head = new node(-1, -1);
-    node *tail = new node(-1, -1);
-    map<int, node*>mp;
-    int size;
     
+    int size = 0;
+    map<int, Node*>mp;
+    Node *head = new Node(-1, -1);
+    Node *tail = new Node(-1,-1);
     LRUCache(int capacity) {
         size = capacity;
-        
-        head->next = tail;
-        tail->prev = head;
-        
+        head->right = tail;
+        tail->left = head;
     }
     
-    void del(node *_node) {
+    void insert(int key, int value) {
         
-        node *prevNode = _node->prev;
-        node *nextNode = _node->next;
-        prevNode->next = nextNode;
-        nextNode->prev = prevNode;
-        mp.erase(_node->key);
-        delete _node;
+        // head->right = tail;
+        Node *newNode = new Node(key, value);
+        mp[key] = newNode;
+        Node *temp = head->right;
+        head->right = newNode;
+        newNode->left = head;
+        newNode->right = temp;
+        temp->left = newNode;
     }
-    
+    void deleteKey(int key) {
+        
+        Node* currNode = mp[key];
+        mp.erase(key);
+        Node*leftNode = currNode->left;
+        Node*rightNode = currNode->right;
+        currNode->left = currNode->right = NULL;
+        delete(currNode);
+        leftNode->right = rightNode;
+        rightNode->left = leftNode;
+        
+        
+    }
     int get(int key) {
+        
         if(!mp.count(key))
             return -1;
+        int value = mp[key]->value;
+        deleteKey(key);
         
-        int value = mp[key]->val;
+        insert(key, value);
         
-        node *temp = mp[key];
-        del(temp);
-        
-        put(key, value);
         return value;
-        
-        
-        
-        
     }
     
     void put(int key, int value) {
         
-        if(mp.count(key)) {
-            del(mp[key]);
+         if(mp.count(key)) {
+            deleteKey(key);
         }
-        if(mp.size() == size)
-        {
-            del(tail->prev);
-        }
-        node *loc_node = new node(key, value);
-        mp[key] = loc_node;
         
-        node *temp = head->next;
-        head->next = loc_node;
-        loc_node->prev = head;
-        loc_node->next = temp;
-        temp->prev = loc_node;
+        if(mp.size()+1 > size) {
+            deleteKey(tail->left->key);
+        }
+       
+        insert(key, value);
         
     }
 };
