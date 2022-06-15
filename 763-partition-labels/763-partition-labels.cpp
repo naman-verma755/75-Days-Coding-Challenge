@@ -1,40 +1,53 @@
 class Solution {
 public:
+    static bool cmp(pair<int, int>&pr1, pair<int, int>&pr2) {
+        
+        return pr1.first < pr2.second;
+    }
     vector<int> partitionLabels(string s) {
         
-        map<char, int> start,end;
+         
+        vector<pair<int, int>>v(27,{-1,-1});
+        // for(int i = 0; i < 27; i++)
+        //     v[i].first = v[i].second = i;
+        
+        map<char, pair<int, int>>mp;
+        
         for(int i = 0; i < s.length(); i++) {
             
-            if(start.count(s[i])) {
-                end[s[i]] = i;
-            }
-            else 
-                start[s[i]] = end[s[i]] = i;
-        }
-        
-        vector<pair<int,int>>v;
-        
-        for(auto it : start) {
-            // cout<<it.first<<" "<<it.second<<" "<<end[it.first]<<endl;
-            v.push_back({it.second,end[it.first]});
-        }
-        sort(v.begin(), v.end());
-           vector<int>ans;
-        int a = v[0].first, b = v[0].second;
-        for(int i = 1; i < v.size(); i++) {
-            if(b > v[i].first) {
-                a = min(a,v[i].first);
-                b = max(b,v[i].second);
+            if(v[s[i]-'a'].first == -1) {
+               
+                v[s[i]-'a'].first = i;
+                v[s[i]-'a'].second = i;
             }
             else {
-                ans.push_back((b-a+1));
-                 a = v[i].first;
-                
-                b = v[i].second;
+                v[s[i]-'a'].second = i;
+            }
+            
+            
+        }
+        sort(v.begin(), v.end());
+        vector<int>ans;
+        int low = -1, high = -1;
+        for(pair<int,int>&pr : v) {
+            if(low == -1 && high == -1) {
+                low = pr.first;
+                high = pr.second;
+            }
+            else {
+                if(pr.first <= high) {
+                    low = min(low, pr.first);
+                    high = max(high, pr.second);
+                }
+                else {
+                    ans.push_back(high-low+1);
+                    low = pr.first;
+                    high = pr.second;
+                }
             }
         }
-         ans.push_back((b-a+1));
-     
+        ans.push_back(high-low+1);
+        
         return ans;
         
     }
