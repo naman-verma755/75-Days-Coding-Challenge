@@ -1,8 +1,10 @@
 class pqueue{
     public:
-    int a[100001];
+    int *a;
     int size = 0;
-    
+    pqueue(int n) {
+        a = (int*)malloc((n+1)*sizeof(int));
+    }
     void push(int key);
     void maxHeapify( int index);
     int top();
@@ -56,7 +58,7 @@ public:
     int findKthLargest(vector<int>& nums, int k) {
         
         int n = nums.size();
-       pqueue *pq = new pqueue();
+       pqueue *pq = new pqueue(k);
         for(int  i = 0; i < n; i++) {
             pq->push(nums[i]);
             // pq->print();
