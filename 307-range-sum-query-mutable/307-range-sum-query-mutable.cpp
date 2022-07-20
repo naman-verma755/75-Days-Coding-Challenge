@@ -2,7 +2,7 @@ class NumArray {
 public:
     vector<int>v;
     int size;
-    int seg[100000];
+    int seg[4*(30001)];
     
     int build(int index, int i, int n) {
         
@@ -45,55 +45,28 @@ public:
         int ele = v[index];
         v[index] = val;
         updateVal(0, 0, size-1, index, ele);
-        // build(0, 0, size-1);
     }
     
     int get(int in, int i, int n, int l, int r) {
         
         if(n < l || r < i)
             return 0;
-        
-        // if(l == 0 && r == 3)
-        // cout<<i<<" "<<n<<" ";
-        // cout<<endl;
-        // cout<<i<<" "<<n<<endl;
+      
         if(l <= i && n <= r)
             return seg[in];
-        // cout<<"after\n";
-        //  if(l == 0 && r == 3)
-        // cout<<i<<" "<<n<<" ";
-        // cout<<endl;
-        // if(l == 0 && r == 3)
-        // cout<<"Yes"<<endl;
+        
         int mid = (i+n)/2;
         
         int left = get((2*in+1), i, mid, l, r);
         int right = get((2*in+2), mid+1, n, l, r);
-        // cout<<"=f "<<(2*in+1)<<" "<<left<<" "<<(2*in+2)<<" "<<right<<endl;
         return left+right;
     }
-    void print(int in, int i, int n) {
-        
-        if(i == n) {
-            // cout<<in<<" ="<<seg[in]<<" ";
-            // cout<<endl;
-            return;
-        }
-        // if(i > n)
-        //     return;
-        int mid = (i+n)/2;
-        print((2*in+1), i, mid);
-        print((2*in+2), mid+1, n);
-        // cout<<in<<" ="<<seg[in]<<" ";
-    }
+   
     int sumRange(int left, int right) {
         
-        // if(left == 0 && right == 3)
-        // {
-        //     print(0, 0, size-1);
-        // }
+        
         return get(0, 0, size-1, left, right);
-        // return seg[0];
+        
     }
 };
 
