@@ -11,40 +11,58 @@
  */
 class Solution {
 public:
+//     bool isValid(int index, int prev, TreeNode *node) {
+        
+//         if(index&1) {
+//             if(prev > node->val)
+//                 return true;
+//             else
+//                 return false;
+//         }
+//          if(!(index&1)) {
+//             if(prev < node->val)
+//                 return true;
+//             else
+//                 return false;
+//         }
+//         return true;
+//     }
     bool isEvenOddTree(TreeNode* root) {
         
         
-        int flag = 0;
-        
         queue<TreeNode*>q;
         q.push(root);
+        bool flag = false;
         while(!q.empty()) {
-            int prev;
-            if(flag == 0)
-             prev = 0;
-            else
-                prev = INT_MAX;
-            int size = q.size();
-            while(size > 0) {
-                
-                TreeNode *node = q.front();
             
-                if(flag == 0 && (prev >= node->val || !(node->val & 1))) 
-                    return false;
-                if(flag == 1 && (prev <= node->val || (node->val & 1)))
-                    return false;
+            int k = q.size();
+            int prev = (!flag)?INT_MIN:INT_MAX;
+            while(k > 0) {
+                // cout<<prev<<" "<<flag;
+                TreeNode *node = q.front();
+             
+                if(!flag && (prev >= node->val || !(node->val&1))) return false;
+                
+                if(flag && (prev <= node->val || (node->val&1))) return false;
+                
                 prev = node->val;
                 q.pop();
-                if(node->left != NULL)
+                
+                if(node->left != NULL) {
+                 
                     q.push(node->left);
-                if(node->right != NULL)
+                }
+                if(node->right != NULL) {
+                
                     q.push(node->right);
-                size--;
+                }
+                k--;
+                
+                
             }
-           flag = !flag;
             
+            flag = !flag;
         }
-        
         return true;
     }
 };
