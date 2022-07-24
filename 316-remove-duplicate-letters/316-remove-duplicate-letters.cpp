@@ -1,35 +1,34 @@
 class Solution {
 public:
     string removeDuplicateLetters(string s) {
-        // return "";
-        map<char, int>mp;   //storing character and its corresponding last index;
-        for(int i = 0; i < s.length(); i++) {
+        int len = s.length();
+        map<int,int>mp;
+        for(int i = 0; i < len; i++)
             mp[s[i]] = i;
-        }
         stack<int>st;
         set<char>se;
-        // cout<<mp['b']<<" ";
-        for(int i = 0; i < s.length(); i++) {
+        for(int i = 0; i < len; i++) {
             
             if(se.find(s[i]) != se.end())
                 continue;
             while(!st.empty() && s[st.top()] > s[i] && mp[s[st.top()]] > i) {
-                char ch = s[st.top()];
-                se.erase(ch);
+                se.erase(s[st.top()]);
                 st.pop();
             }
-            // if(se.find(s[i]) == se.end()) {
+            
+            if(se.find(s[i]) == se.end()) {
+                st.push(i);
                 se.insert(s[i]);
-            st.push(i);
-            // }
+            }
             
             
         }
         string ans = "";
         while(!st.empty()) {
-            ans = s[st.top()]+ans; 
+            ans += s[st.top()];
             st.pop();
         }
+        reverse(ans.begin(), ans.end());
         return ans;
     }
 };
