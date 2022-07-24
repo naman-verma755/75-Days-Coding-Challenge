@@ -1,53 +1,42 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        
+        map<char, int>mp1, mp2;
+        for(char ch : t)
+            mp1[ch]++;
         
         int count = 0;
-        map<char, int>mp, mp2;
+        int i = 0, j =0;
         string ans = "";
-        int maxLength = INT_MAX;
-        for(char ch: t)
-            mp[ch]++;
-        int left = 0;
-        for(int right = 0; right < s.length(); right++) {
+        int len = INT_MAX;
+        while(j < s.length()) {
             
-            mp2[s[right]]++;
-            if(mp.count(s[right]) && mp2[s[right]] <= mp[s[right]])
+            if(mp1.count(s[j]))
+                mp2[s[j]]++;
+            if(mp1.count(s[j]) && mp2[s[j]] <= mp1[s[j]])
                 count++;
             
             if(count == t.length()) {
+                // cout<<"ye";
+                 
+                // cout<<i<<" "<<j<<endl;
+                while(!mp1.count(s[i]) || mp2[s[i]] > mp1[s[i]]) {
+                    
+                    if(mp1.count(s[i]) && mp2[s[i]] > mp1[s[i]])
+                        mp2[s[i]]--;
+                    
+                    i++;
+                }
+                if(j-i+1 < len) {
+                    len = j-i+1;
+                    ans = s.substr(i, j-i+1);
+                }
                 
-                while(!mp.count(s[left]) || mp2[s[left]] > mp[s[left]]) {
-                    if(mp2[s[left]] > mp[s[left]])
-                    mp2[s[left]]--;
-                left++;
-                }
-                  int len = right-left+1;
-                if(len < maxLength) {
-                    maxLength = len;
-                ans = s.substr(left, len);
-                }
+               
+                
             }
-//             while(left < right && (count > t.length() || !mp.count(s[left])))
-//             {
-//                 if(mp.count(s[left]))
-//                     count--;
-                
-//                 left++;
-//             }
-//             while(count > t.length()) {
-                
-//                 if(mp.count(s[left]))
-//                     count--;
-//                 left++;
-//             }
-            
-            // if(count == t.length())
-          
-            // cout<<ans<<" ";
+            j++;
         }
-         
         return ans;
     }
 };
