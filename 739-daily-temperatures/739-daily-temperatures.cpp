@@ -3,22 +3,17 @@ public:
     vector<int> dailyTemperatures(vector<int>& temperatures) {
         
         int size = temperatures.size();
-        vector<int>ans(size, 0);
         stack<int>st;
-        
-        for(int i = size-1; i >= 0; i--) {
+        vector<int>ans(size, 0);
+        for(int i = 0; i < size; i++) {
             
-            
-            while(!st.empty() && temperatures[st.top()] <= temperatures[i]) {
+            while(!st.empty() && temperatures[st.top()] < temperatures[i]) {
+                ans[st.top()] = i-st.top();
                 st.pop();
             }
             
-            if(!st.empty()) 
-                ans[i] = st.top()-i;
-            
             st.push(i);
         }
-        
         return ans;
     }
 };
