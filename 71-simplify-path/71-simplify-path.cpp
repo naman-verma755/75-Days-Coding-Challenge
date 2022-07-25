@@ -2,53 +2,44 @@ class Solution {
 public:
     string simplifyPath(string path) {
         
-        int len = path.length();
         stack<string>st;
-        int i = 0;
-        
-        while(i < len) {
+        for(int i = 0; i < path.length(); ) {
             
-          
-            if( path[i] == '/' ) {
-                
+            
+            if(path[i] == '/') {
                 if(st.empty() || st.top() != "/")
-                {
                     st.push("/");
-                }
                 i++;
-                continue;
+            } else if(path[i] == '.' || (path[i] >= 'a' && path[i] <= 'z') || (path[i] >= 'A' && path[i] <= 'Z')) {
                 
-            }
-           
-                string s = "";
+                string dir = "";
                 while(i < path.length() && path[i] != '/') {
-                    s += path[i];
+                    dir += path[i];
                     i++;
                 }
-            cout<<s<<" ";
-                if(s == ".")
+                cout<<dir<<" ";
+                if(dir == ".")
                     continue;
-                if(s == ".." )
-                {
+                if(dir == "..") {
                     if(st.size() > 1) {
                         st.pop();
                         st.pop();
                     }
                 }
-                else {
-                    st.push(s);
-                }
-                
-            
+                else
+                    st.push(dir);
+            }
+            else 
+                i++;
             
         }
-        if(st.size() != 1 && st.top() == "/")
-            st.pop();
-        string ansPath = "";
-        while(!st.empty()  ) {
-            ansPath = st.top() + ansPath;
+        if(st.size() > 1 && st.top() == "/") st.pop();
+            
+        string ans = "";
+        while(!st.empty()) {
+            ans = st.top()+ans;
             st.pop();
         }
-        return ansPath;
+        return ans;
     }
 };
