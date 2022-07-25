@@ -1,29 +1,50 @@
 class Solution {
 public:
-   int func(int day, set<int>&d, vector<int>&costs, vector<int>&dp) {
+//     int func(int index, set<int>&st, vector<int>& costs, int destination) {
         
-        if(day <= 0)
-            return 0;
-       if(dp[day] != -1)
-           return dp[day];
+//         if(index > destination)
+//             return 0;
         
-        if(d.find(day) != d.end()) {
+//         if(st.find(index) != st.end()) {
             
-            int r1 = func(day-1,d, costs, dp)+costs[0];
-            int r2 = func(day-7, d, costs, dp)+costs[1];
-            int r3 = func(day-30, d, costs, dp)+costs[2];
+//             int way1 = 0, way2 = 0, way3 = 0;
             
-            return dp[day] = min(r1, min(r2, r3));
-        }
-        else
-            return dp[day] = func(day-1, d, costs, dp);
-    }
+//             way1 = func(index+1, st, costs, destination)+costs[0];
+//             way2 = func(index+7, st, costs, destination)+costs[1];
+//             way3 = func(index+30, st, costs, destination)+costs[2];
+        
+//             return min(way1, min(way2, way3));
+//         }
+//         else
+//             return func(index+1, st, costs, destination);
+//     }
     int mincostTickets(vector<int>& days, vector<int>& costs) {
+        
         set<int>st;
-        for(int day : days)
-            st.insert(day);
-        int maxDay = days[days.size()-1];
-        vector<int>dp(maxDay+1, -1);
-        return func(maxDay, st, costs, dp);
+        int destination = 0;
+        for(int day : days){
+            st.insert(day); 
+            destination = max(destination, day);
+        }
+       int dp[destination+1];
+        dp[0] = 0;
+        
+        for(int i = 1; i <= destination; i++) {
+            
+            if(st.find(i) != st.end()) {
+                int way1 = costs[0], way2 = costs[1], way3 = costs[2];
+                
+                way1 += dp[i-1];
+                if(i-7 >= 0)
+                    way2 += dp[i-7];
+                if(i-30 >= 0)
+                    way3 += dp[i-30];
+                dp[i] = min(way1, min(way2, way3));
+                
+            }
+            else
+                dp[i] = dp[i-1];
+        }
+        return dp[destination];
     }
 };
