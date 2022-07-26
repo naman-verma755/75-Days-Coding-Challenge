@@ -24,23 +24,30 @@ public:
         int mod = 1000000007;
         int slen = s.length();
         int tlen = t.length();
-        int dp[slen+1][tlen+1];
+        // int dp[slen+1][tlen+1];
+        vector<int>prev(tlen+1, 0);
+    
        
-        for(int j = 0; j <= tlen; j++)
-            dp[0][j] = 0;
+//         for(int j = 0; j <= tlen; j++)
+//             dp[0][j] = 0;
          
-        for(int i = 0; i <= slen; i++) 
-            dp[i][0] = 1;
+//         for(int i = 0; i <= slen; i++) 
+//             dp[i][0] = 1;
+        prev[0] = 1;
         for(int i = 1; i <= slen; i++) {
+            vector<int>curr(tlen+1, 0);
+            curr[0] = 1;
             for(int j = 1; j <= tlen; j++) {
                 if(s[i-1] == t[j-1]) {
-                    dp[i][j] = (dp[i-1][j-1]+dp[i-1][j])%mod;
+                     curr[j]= (prev[j-1]+prev[j])%mod;
                 }
                 else
-                    dp[i][j] = dp[i-1][j];
+                    curr[j] = prev[j];
             }
+            prev = curr;
+        
         }
         
-        return dp[slen][tlen];
+        return prev[tlen];
     }
 };
