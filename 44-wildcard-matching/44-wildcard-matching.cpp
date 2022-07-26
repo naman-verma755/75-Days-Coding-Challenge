@@ -1,58 +1,59 @@
 class Solution {
 public:
-    bool func(int i, int j, string p, string s, vector<vector<int>>&dp) {
+   
+//     bool func(int i, int j, string s, string p, vector<vector<int>>&dp) {
         
-        if(i == p.length() && j == s.length())
-            return true;
-        if(j < s.length() && i == p.length())
-            return false;
-        if(j == s.length()) {
-            for(int it = i; it < p.length(); it++) {
-                if(p[it] != '*')
-                    return false;
-            }
-            return true;
-        }
-        if(dp[i][j] != -1)
-            return dp[i][j];
-        if(p[i] == s[j] || p[i] == '?') {
-            return dp[i][j] = func(i+1, j+1, p, s, dp);
-        }
-        else if(p[i] == '*') 
-            return dp[i][j] = (func(i, j+1, p, s, dp) || func(i+1, j, p, s, dp));
-        else
-            return dp[i][j] = false;
+//         if(i == s.length() && j == p.length())
+//             return true;
+//         if(j == p.length() && i < s.length())
+//             return false;
+//         if(i == s.length()) {
+//             for(int it = j; it < p.length(); it++)
+//             {
+//                 if(p[it] != '*')
+//                     return false;
+//             }
+//             return true;
+//         }
+//         if(dp[i][j] != -1)
+//             return dp[i][j];
         
-        
-    }
+//         if(s[i] == p[j] || p[j] == '?') {
+//             return dp[i][j] = func(i+1, j+1, s, p, dp);
+//         }
+//         else if(p[j] == '*') {
+//             return dp[i][j] = func(i+1, j, s, p, dp) || func(i, j+1, s, p, dp);
+//         }
+//         else 
+//             return dp[i][j] = false;
+//     }
     bool isMatch(string s, string p) {
-        // vector<vector<int>>dp(p.length(), vector<int>(s.length(), -1));
-        
-        int dp[p.length()+1][s.length()+1];
-        for(int i = 0; i <= s.length(); i++) 
+        // vector<vector<int>>dp(s.length(), vector<int>(p.length(), -?1));
+        int slen = s.length(), plen = p.length();
+        int dp[plen+1][slen+1];
+        for(int i = 0; i <= slen; i++)
             dp[0][i] = false;
-        dp[0][0] = true;
-        int i = 1;
-        for( ; i <= p.length(); i++) {
+        for(int i = 1; i <=plen; i++)
+        dp[i][0] = false;
+        for(int i = 1; i <=plen; i++)
+        {
             if(p[i-1] != '*')
                 break;
             dp[i][0] = true;
         }
-            
-        for(; i<= p.length() ;i++) 
-            dp[i][0] = false;
+        dp[0][0] = true;
         
-        for(int i = 1; i <= p.length(); i++) {
-            for(int j = 1; j <= s.length(); j++) {
+        for(int i = 1; i <= plen; i++) {
+            for(int j= 1; j <= slen; j++) {
                 if(p[i-1] == s[j-1] || p[i-1] == '?')
-                    dp[i][j] = dp[i-1][j-1];
+                    dp[i][j]  = dp[i-1][j-1];
                 else if(p[i-1] == '*')
-                    dp[i][j] = dp[i][j-1] || dp[i-1][j];
+                    dp[i][j] = dp[i-1][j] || dp[i][j-1];
                 else
                     dp[i][j] = false;
             }
         }
-        return dp[p.length()][s.length()];
-        // return func(0, 0, p, s, dp);
+        return dp[plen][slen];
+        // return func(0, 0, s, p, dp);
     }
 };
