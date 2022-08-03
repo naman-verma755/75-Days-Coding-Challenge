@@ -4,9 +4,9 @@ public:
         int sum = 0, maxSum = INT_MIN;
         
         
-        for(int i = 0; i < nums.size(); i++) {
+        for(int num : nums) {
             
-            sum += nums[i];
+            sum += num;
             maxSum = max(sum, maxSum);
             if(sum < 0)
                 sum = 0;
