@@ -1,57 +1,46 @@
-
-struct trie {
-    trie *a[26];
-    
-    bool flag = false;
-    
-};
-
 class Trie {
 public:
+    struct trie {
+        trie *a[26];
+        bool flag = false;
+    };
     trie *root;
+    
     Trie() {
-         root = new trie();
+        root = new trie();
     }
     
     void insert(string word) {
-         
-       trie* node = root;
+        trie *temp = root;
         for(int i = 0; i < word.length(); i++) {
-            
-            if(node->a[word[i]-'a'] == NULL) {
-                node->a[word[i]-'a'] = new trie();
-            }
-            node = node->a[word[i]-'a'];
+            if(temp->a[word[i]-'a'] == NULL)
+                temp->a[word[i]-'a'] = new trie();
+            temp = temp->a[word[i]-'a'];
         }
-        node->flag = true;
-        
+        temp->flag = true;
     }
     
     bool search(string word) {
-         trie *node = root;
+        trie *temp = root;
         for(int i = 0; i < word.length(); i++) {
-            
-            if(node->a[word[i]-'a'] == NULL) {
+            if(temp->a[word[i]-'a'] == NULL)
                 return false;
-            }
-            node = node->a[word[i]-'a'];
+            temp = temp->a[word[i]-'a'];
         }
-        if(node->flag)
+        if(temp->flag)
             return true;
         return false;
+        
     }
     
     bool startsWith(string prefix) {
-         trie *node = root;
+         trie *temp = root;
         for(int i = 0; i < prefix.length(); i++) {
-            
-            if(node->a[prefix[i]-'a'] == NULL) {
+            if(temp->a[prefix[i]-'a'] == NULL)
                 return false;
-            }
-            node = node->a[prefix[i]-'a'];
+            temp = temp->a[prefix[i]-'a'];
         }
-        
-            return true;
+        return true;
     }
 };
 
