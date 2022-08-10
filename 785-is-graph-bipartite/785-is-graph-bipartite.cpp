@@ -1,39 +1,41 @@
 class Solution {
 public:
-    bool dfs(int node, int prev, vector<vector<int>>&graph, vector<int>&visited) {
+    bool dfs(int node, vector<vector<int>>& graph, int color, int colored[]) {
         
-        if(prev == -1)
-            visited[node] = 1;
-        if(prev == 1)
-            visited[node] = 2;
+        
+       
+            colored[node] = color;
+       // cout<<node<<" ";
+        
+        if(color == 1)
+            color = 2;
         else
-            visited[node] = 1;
+            color = 1;
         
-        for(auto it : graph[node]) {
-            
-            if(visited[it] != -1 ) {
-                if(visited[node] == visited[it])
-                return false;
-            }
-            else if(!dfs(it, visited[node], graph, visited))
-                return false; 
-            
+        for(int it : graph[node]) {
+        
+            if(colored[it] == 0 && !dfs(it, graph, color, colored))
+                 return false;
+            else if(colored[it] == colored[node])
+                    return false;
         }
         return true;
     }
     bool isBipartite(vector<vector<int>>& graph) {
+        int n = graph.size();
+        int colored[n];
+        for(int i = 0; i < n; i++)
+            colored[i] = 0;
+     
         
-        int size = graph.size();
-        
-        vector<int>visited(size, -1);
-        for(int i = 0; i < size; i++) {
-            if(visited[i] == -1) {
-                
-                if(!dfs(i, -1, graph, visited))
-                    return false;
-                
-            }
+        for(int i = 0; i < n; i++) {
+            if(colored[i] == 0 && !dfs(i, graph, 1, colored))
+                return false;
         }
+        // for(int i = 0; i<n; i++)
+        //     cout<<colored[i]<<" ";
         return true;
+        
+        
     }
 };
