@@ -1,53 +1,57 @@
 class Solution {
 public:
-    int find(int u, int parent[]) {
+    int find(int a, int parent[]) {
+        if(a == parent[a])
+            return a;
         
-        if(parent[u] == u)
-            return u;
-        
-        return parent[u] = find(parent[u], parent);
+        return parent[a] = find(parent[a], parent); 
     }
-    void unionOf(int u, int v, int parent[], int rank[]) {
+    void unionByRank(int a, int b, int parent[], int rank[]) {
         
-        if(rank[u] < rank[v]) 
-            parent[u] = v;
-        else if(rank[u] > rank[v])
-            parent[v] = u;
+       
+        
+        if(rank[a] < rank[b])
+            parent[a] = b;
+        else if(rank[b] < rank[a])
+            parent[b] = a;
         else {
-            rank[u] ++;
-            parent[v] = u;
+            rank[a]++;
+            parent[b] = a;
         }
     }
     int findCircleNum(vector<vector<int>>& isConnected) {
         
-        int size = isConnected.size();
-        int rank[size];
-        int parent[size];
-        
-        for(int i = 0; i < size; i++) {
-            rank[i] = 0;
+        int n = isConnected.size();
+        int parent[n];
+        int rank[n];
+        for(int i = 0; i < n; i++) {
             parent[i] = i;
+            rank[i] = 0;
         }
+//          for(int i = 0; i < n; i++)
+//              cout<<parent[i]<<" ";
         
-        for(int i = 0 ; i < size; i++) {
-            for(int j = i+1; j < size; j++) {
-                if(isConnected[i][j] == 1) {
-                    
-                    int parentU = find(i, parent);
-                    int parentV = find(j, parent);
-                    if(parentU == parentV)
-                        continue;
-                    
-                    unionOf(parentU, parentV, parent, rank);
+        for(int i = 0; i < n; i++) {
+            for(int j = i+1; j < n; j++) {
+                if(isConnected[i][j] == 1 ) 
+                {
+
+                     int a = find(i, parent);
+                     int b = find(j, parent);
+       
+                     if(a == b)
+                      continue;
+                    unionByRank(a,b, parent, rank);
                 }
             }
         }
+       
         int count = 0;
-        for(int i = 0; i < size; i++) {
-           
+        for(int i = 0; i < n; i++) {
             if(parent[i] == i)
                 count++;
         }
+        
         return count;
         
     }
