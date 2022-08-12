@@ -12,54 +12,49 @@ class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         
-        ListNode *head = NULL, *prev = NULL;
-        int carry = 0;
-        
-        while(l1 != NULL && l2 != NULL) {
-            carry = l1->val + l2->val + carry;
-            // cout<<carry<<" ";
-            int num = carry%10;
-            carry /= 10;
-            ListNode *newNode = new ListNode(num);
-            if(head == NULL) 
-                head = newNode;
-            else 
-                prev->next = newNode;
-               
-            
-            prev = newNode;
-            
-            l1 = l1->next;
-            l2 = l2->next;
-        }
-         while(l1 != NULL) {
-            carry = l1->val  + carry;
-            int num = carry%10;
-            carry /= 10;             
-            ListNode *newNode = new ListNode(num);
-            prev->next = newNode;
-            prev = newNode;
-            
-            l1 = l1->next;
-            
-        }
-         while(l2 != NULL) {
-            carry = l2->val  + carry;
-            int num = carry%10;
-             carry /= 10;
-            ListNode *newNode = new ListNode(num);
-            prev->next = newNode;
-            prev = newNode;
-            
-            l2 = l2->next;
-            
-        }
-        if(carry != 0)
-        {
-            ListNode *newNode = new ListNode(carry);
-            prev->next = newNode;
-        }
-        return head;
-        
+          ListNode *ans = l1;
+          ListNode *prev1, *prev2;
+          int carry = 0;
+          while(l1 != NULL && l2 != NULL) {
+              int val = l1->val+l2->val + carry;
+              carry = 0;
+              if(val > 9)
+              {
+                  int k = val%10;
+                  val /= 10;
+                  carry = val%10;
+                  l1->val = k;
+              }
+              else
+                  l1->val = val;
+              prev1 = l1;
+              prev2 = l2;
+              l1 = l1->next;
+              l2 = l2->next;
+          }
+          if(l1 == NULL && l2 != NULL) {
+              prev2->next = NULL;
+              prev1->next = l2;
+              l1 = l2;
+          }
+          while(l1 != NULL) {
+              int val = l1->val + carry;
+              carry = 0;
+              if(val > 9)
+              {
+                  int k = val%10;
+                  val /= 10;
+                  carry = val%10;
+                  l1->val = k;
+              }
+              else
+                  l1->val = val;
+              prev1 = l1;
+              l1 = l1->next;
+          }
+          if(carry > 0)
+              prev1->next = new ListNode(carry);
+          
+        return ans;
     }
 };
