@@ -1,11 +1,11 @@
 class Solution {
 public:
     
-    void findUniqueCombinations(int index, int target, vector<int>&candidates, vector<int>&v, set<vector<int>>&st) {
+    void findUniqueCombinations(int index, int target, vector<int>&candidates, vector<int>&v, vector<vector<int>>&ans) {
         
         if(target == 0)
         {
-           st.insert(v);
+           ans.push_back(v);
             return;
         }
         
@@ -15,14 +15,14 @@ public:
         
         
         v.push_back(candidates[index]);
-        findUniqueCombinations(index+1, target-candidates[index], candidates, v, st);
+        findUniqueCombinations(index+1, target-candidates[index], candidates, v, ans);
         v.pop_back();
         int prev = candidates[index];
         int i = index+1;
         while(i < candidates.size() && candidates[i] == prev) {
             i++;
         }
-        findUniqueCombinations(i, target, candidates, v, st);
+        findUniqueCombinations(i, target, candidates, v, ans);
     }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
         
@@ -31,7 +31,7 @@ public:
         set<vector<int>>st;
         vector<int>v;
         // vector<vector<int>>dp(candidates.size()+1, vector<int>(target, -1));
-        findUniqueCombinations(0, target, candidates, v, st);
+        findUniqueCombinations(0, target, candidates, v, ans);
         for(auto it : st)
             ans.push_back(it);
         return ans;
