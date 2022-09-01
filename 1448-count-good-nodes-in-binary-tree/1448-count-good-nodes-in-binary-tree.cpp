@@ -11,30 +11,21 @@
  */
 class Solution {
 public:
+    void dfs(TreeNode *node, int prev, int &count) {
+        if(node == NULL)
+            return;
+        
+        if(node->val >= prev)
+            count++;
+        
+        dfs(node->left, max(prev, node->val), count);
+        dfs(node->right, max(prev, node->val), count);
+    }
     int goodNodes(TreeNode* root) {
-        
         int count = 0;
-        queue<pair<TreeNode*,int>>q;
-        q.push({root, -10003});
         
-        while(!q.empty()) {
-            int size = q.size();
-            while(size > 0) {
-                
-                pair<TreeNode*, int> it = q.front();
-                q.pop();
-                if(it.first->val >= it.second)
-                    count++;
-                int maxi = max(it.first->val, it.second);
-                if(it.first->left != NULL)
-                    q.push({it.first->left, maxi});
-                if(it.first->right != NULL)
-                    q.push({it.first->right, maxi});
-                
-                size--;
-            }
-        }
+        dfs(root, root->val, count);
+        
         return count;
-        
     }
 };
