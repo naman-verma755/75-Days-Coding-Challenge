@@ -3,35 +3,33 @@ public:
     string minWindow(string s, string t) {
         
         map<char, int>mp1, mp2;
-          int maxi = INT_MAX;
-        string ans = "";
-        for(char ch: t)
+        for(char ch : t)
             mp1[ch]++;
-        int count = 0;
-        int itr1 = 0, itr2 = 0;
-      
-        while(itr1 < s.length()) {
-            if(mp1.count(s[itr1]))
-            mp2[s[itr1]]++;
-            if(mp1.count(s[itr1]) && mp2[s[itr1]] <= mp1[s[itr1]])
-            count++;
+        int j = 0;
+        int mini = INT_MAX, count = 0;
+        string ans = "";
+        for(int i = 0; i < s.length(); i++) {
+            
+            if(mp1.count(s[i]))
+                mp2[s[i]]++;
+            
+            if(mp1.count(s[i]) && mp2[s[i]] <= mp1[s[i]])
+                count++;
             
             if(count == t.length()) {
-                // cout<<itr1<<" ";
-                while(!mp1.count(s[itr2]) || mp2[s[itr2]] > mp1[s[itr2]]) {
+                // cout<<i<<" ";
+                while(!mp1.count(s[j]) || (mp1.count(s[j]) &&mp2[s[j]] > mp1[s[j]])) {
                     
-                    if(mp1.count(s[itr2]) && mp2[s[itr2]] > mp1[s[itr2]])
-                        mp2[s[itr2]]--;
-                    itr2++;
+                    if(mp1.count(s[j])&&mp2[s[j]] > mp1[s[j]] )
+                        mp2[s[j]]--;
+                    j++;
                 }
-                
-                 if(maxi > (itr1-itr2+1)) {
-                maxi = itr1-itr2+1;
-                ans = s.substr(itr2, (itr1-itr2+1));
-                  }
+                int len = i-j+1;
+                if(len < mini) {
+                ans = s.substr(j, len);
+                mini = len;
+                }
             }
-           
-            itr1++;
             
         }
         return ans;
